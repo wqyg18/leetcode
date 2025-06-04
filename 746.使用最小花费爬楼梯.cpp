@@ -12,15 +12,19 @@ public:
     int minCostClimbingStairs(vector<int> &cost)
     {
         vector<int> dp(cost.size() + 1);
-        dp[0] = 0;
-        dp[1] = 0;
+        // 因为状态转移方程只和i-1，i-2有关，所以可以直接使用两个变量
+        int dp0 = 0;
+        int dp1 = 0;
+        int dpi;
 
         for (int i = 2; i <= cost.size(); i++)
         {
-            dp[i] = min(dp[i - 1] + cost[i - 1], dp[i - 2] + cost[i - 2]);
+            dpi = min(dp1 + cost[i - 1], dp0 + cost[i - 2]);
+
+            dp0 = dp1;
+            dp1 = dpi;
         }
-        return dp[cost.size()];
-        // 从第i个台阶向上爬，cost只记录了除顶层之外的所有台阶，所以需要返回dp[cost.size()]
+        return dpi;
     }
 };
 // @lc code=end
